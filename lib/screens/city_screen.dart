@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:clima/utilities/constants.dart';
-import 'location_screen.dart';
 
 class CityScreen extends StatefulWidget {
   @override
@@ -8,36 +7,36 @@ class CityScreen extends StatefulWidget {
 }
 
 class _CityScreenState extends State<CityScreen> {
+  String cityName;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage('images/city.jpg'),
             fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(
+                Colors.white.withOpacity(0.6), BlendMode.dstATop),
           ),
         ),
         constraints: BoxConstraints.expand(),
         child: SafeArea(
           child: Column(
             children: <Widget>[
-              Align(
-                alignment: Alignment.topLeft,
-                child: FlatButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return LocationScreen();
-                        },
-                      ),
-                    );
-                  },
-                  child: Icon(
-                    Icons.arrow_back_ios,
-                    size: 50.0,
+              Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: FlatButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Icon(
+                      Icons.arrow_back_ios,
+                      size: 50.0,
+                    ),
                   ),
                 ),
               ),
@@ -50,7 +49,7 @@ class _CityScreenState extends State<CityScreen> {
                     textAlign: TextAlign.center,
                     decoration: kTextInputDecoration,
                     onChanged: (value) {
-                      print(value);
+                      cityName = value;
                     },
                   ),
                 ),
@@ -65,7 +64,9 @@ class _CityScreenState extends State<CityScreen> {
                   style: BorderStyle.solid,
                   width: 2,
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context, cityName);
+                },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(
