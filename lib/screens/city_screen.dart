@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:clima/utilities/constants.dart';
+import 'location_screen.dart';
 
 class CityScreen extends StatefulWidget {
   @override
@@ -24,7 +25,16 @@ class _CityScreenState extends State<CityScreen> {
               Align(
                 alignment: Alignment.topLeft,
                 child: FlatButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return LocationScreen();
+                        },
+                      ),
+                    );
+                  },
                   child: Icon(
                     Icons.arrow_back_ios,
                     size: 50.0,
@@ -33,13 +43,38 @@ class _CityScreenState extends State<CityScreen> {
               ),
               Container(
                 padding: EdgeInsets.all(20.0),
-                child: null,
+                child: Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: TextField(
+                    style: TextStyle(color: Colors.black87),
+                    textAlign: TextAlign.center,
+                    decoration: kTextInputDecoration,
+                    onChanged: (value) {
+                      print(value);
+                    },
+                  ),
+                ),
               ),
-              FlatButton(
+              SizedBox(
+                height: 20.0,
+              ),
+              OutlineButton(
+                highlightedBorderColor: Colors.grey,
+                borderSide: BorderSide(
+                  color: Colors.white,
+                  style: BorderStyle.solid,
+                  width: 2,
+                ),
                 onPressed: () {},
-                child: Text(
-                  'Get Weather',
-                  style: kButtonTextStyle,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    'Get Weather',
+                    style: kButtonTextStyle,
+                  ),
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20.0),
                 ),
               ),
             ],
