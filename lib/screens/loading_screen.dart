@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:clima/services/location.dart';
-import 'package:clima/services/networking.dart';
+import 'package:clima/services/weather.dart';
 import 'location_screen.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-
-const apiKey = '5d3c281f8b7ece9515e8f1dac20c6b1b';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -12,38 +9,54 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  double latitude;
-  double longitude;
-
   void initState() {
     super.initState();
     getLocationData();
   }
 
   void getLocationData() async {
-    Location location = Location();
-    await location.getCurrentLocation();
-    latitude = location.latitude;
-    longitude = location.longitude;
-    String url =
-        'http://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey';
-    NetworkHelper networkHelper = NetworkHelper(url);
-    var weatherData = await networkHelper.getData();
-    print(weatherData);
-
+    var weatherData = await WeatherModel().getLocationWeather();
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return LocationScreen();
+      return LocationScreen(locationWeather: weatherData);
     }));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Center(
-      child: SpinKitCircle(
-        color: Colors.white,
-        size: 70.0,
+        body: Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('images/city.jpg'),
+          fit: BoxFit.cover,
+          colorFilter: ColorFilter.mode(
+              Colors.white.withOpacity(0.6), BlendMode.dstATop),
+        ),
+      ),
+      constraints: BoxConstraints.expand(),
+      child: Center(
+        child: SpinKitCircle(
+          color: Colors.white,
+          size: 70.0,
+        ),
       ),
     ));
   }
 }
+
+//
+//Alert(
+//context: context,
+//title: "Unable to get weather",
+//desc: "Make sure you have internet connection",
+//buttons: [
+//DialogButton(
+//child: Text(
+//"OK",
+//style: TextStyle(
+//color: Colors.white, fontSize: 20),
+//),
+//onPressed: () => Navigator.pop(context),
+//width: 120,
+//),
+//]).show();
